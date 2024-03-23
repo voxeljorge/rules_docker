@@ -172,6 +172,9 @@ def _app_layer_impl(ctx, runfiles = None, emptyfiles = None):
         if filepath(ctx, f) not in available and layer_file_path(ctx, f) not in available
     }
 
+    if ctx.attr.binary:
+        file_map[_runfiles_dir(ctx)+"/_repo_mapping"] = ctx.attr.binary[DefaultInfo].files_to_run.repo_mapping_manifest
+
     # emptyfiles(dep) can be `depset` or `list`. Convert it to list only if needed.
     emptyfiles_list = emptyfiles(dep).to_list() if type(emptyfiles(dep)) == "depset" else emptyfiles(dep)
     empty_files = [
